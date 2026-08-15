@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ABOAGYES 2026 | The Wedding Experience of Richard & Josephine</title>
+    <!-- Tailwind CSS for high-fidelity structures -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for sophisticated wedding typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #FAF6F0; /* Soft Ivory Base */
+            overflow-x: hidden;
+            position: relative;
+        }
+        body.gate-active {
+            overflow: hidden; /* Locked initially until envelope is opened */
+        }
+        h1, h2, h3, h4, .font-serif-lux { 
+            font-family: 'Playfair Display', serif; 
+        }
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+        }
+        
+        /* Revised Color Hierarchy: Ivory (55-60%), Lemon Green (20-25%), Wine (10-15%), Peach (5%) */
+        .text-lemongreen { color: #6A8D2F; }
+        .bg-lemongreen { background-color: #6A8D2F; }
+        .bg-lemongreen-dark { background-color: #537023; }
+        .border-lemongreen { border-color: #6A8D2F; }
+        
+        .text-wine { color: #7A1C28; }
+        .bg-wine { background-color: #7A1C28; }
+        .border-wine { border-color: #7A1C28; }
+        
+        .bg-peach { background-color: #FFDAB9; }
+        .border-gold { border-color: #D4AF37; }
+        
+        /* Floating Leaf Flakes */
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(106, 141, 47, 0.12);
+            border-radius: 15px 0;
+            top: -10%;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+        .leaf-peach {
+            background: rgba(255, 218, 185, 0.35);
+            border-radius: 50% 0 50% 0;
+        }
+        @keyframes fall {
+            0% {
+                top: -5%;
+                transform: translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 0.9; }
+            100% {
+                top: 100%;
+                transform: translateX(120px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Card Shadow & Styling */
+        .gold-shadow {
+            box-shadow: 0 10px 30px -10px rgba(106, 141, 47, 0.15), 0 1px 3px rgba(106, 141, 47, 0.05);
+        }
+        .premium-border {
+            border: 2px solid #D4AF37;
+            position: relative;
+        }
+        .premium-border::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px double #D4AF37;
+            pointer-events: none;
+        }
+
+        /* Virtual Envelope Gatekeeper Styling */
+        #envelope-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4eae1;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
+            overflow: hidden;
+        }
+
+        .envelope-panel {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            background-color: #FAF8F5;
+            background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0), radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
+            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 10;
+        }
+        .envelope-left {
+            left: 0;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            transform-origin: left center;
+        }
+        .envelope-right {
+            right: 0;
+            border-left: 1px solid rgba(0,0,0,0.08);
+            transform-origin: right center;
+        }
+
+        .envelope-ribbon {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #F5F5F5 50%, #E8E8E8 100%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 15;
+            transition: opacity 1.2s ease, transform 1.5s ease;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #EDEDED 50%, #D8D8D8 100%);
+            border-radius: 51% 49% 50% 50% / 49% 51% 49% 51%;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.15),
+                inset 0 -4px 10px rgba(0,0,0,0.1),
+                inset 0 4px 10px rgba(255,255,255,0.8);
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wax-seal:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+        .wax-seal-rim {
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.3);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05), 0 2px 4px rgba(255,255,255,0.8);
+        }
+        .wax-seal-monogram {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #6A8D2F;
+            text-shadow: -1px -1px 1px rgba(255,255,255,0.9), 1px 1px 1px rgba(0,0,0,0.15);
+            font-size: 24px;
+            letter-spacing: -1px;
+            user-select: none;
+            z-index: 2;
+        }
+
+        .floral-sprig {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-10px, -115px) rotate(15deg);
+            width: 80px;
+            height: 80px;
+            z-index: 12;
+            pointer-events: none;
+            opacity: 0.85;
+            transition: transform 1.5s ease, opacity 1s ease;
+        }
+
+        #envelope-gate.open .envelope-left { transform: translateX(-105%) rotateY(-15deg); }
+        #envelope-gate.open .envelope-right { transform: translateX(105%) rotateY(15deg); }
+        #envelope-gate.open .wax-seal { transform: translate(-50%, -50%) scale(0.3); opacity: 0; pointer-events: none; }
+        #envelope-gate.open .envelope-ribbon { opacity: 0; transform: translateY(-50%) scaleX(0.8); }
+        #envelope-gate.open .floral-sprig { opacity: 0; transform: translate(-10px, -160px) rotate(25deg); }
+
+        .floral-header-bg {
+            background-color: #FAF6F0;
+            position: relative;
+            z-index: 1;
+        }
+        .premium-oval-card {
+            border-radius: 9999px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 2px 4px rgba(255,255,255,0.9);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            background: rgba(255, 255, 255, 0.97);
+        }
+
+        /* Scratch Card Canvas Styles */
+        .scratch-box {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #FFF;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+            border-radius: 50%;
+            touch-action: none;
+        }
+        .scratch-data-mask {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* Custom Horizontal Image Carousel Styles */
+        .horizontal-scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar Chrome/Safari */
+        }
+        .horizontal-scroll-item {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+        }
+        @media (min-width: 768px) {
+            .horizontal-scroll-item {
+                flex: 0 0 48%;
+            }
+        }
+    </style>
+</head>
+<body class="text-stone-800 antialiased selection:bg-[#FFDAB9] relative min-h-screen gate-active">
+
+    <!-- HIDDEN AUDIO SYSTEM -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://hestetrax.co.za/wp-content/uploads/2022/08/see-what-the-lord-has-done-nathaniel-bassey-mp3-demo.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FLOATING AUDIO CONTROLLER -->
+    <button id="musicToggleBtn" onclick="toggleMusic()" class="hidden fixed bottom-6 left-6 z-50 bg-white/95 hover:bg-white text-stone-700 hover:text-stone-900 w-12 h-12 rounded-full shadow-lg border border-stone-200 flex items-center justify-center transition-all duration-300">
+        <span id="musicIcon" class="text-xl">🔇</span>
+    </button>
+
+    <!-- 1. OPENING / HERO ENVELOPE GATEKEEPER -->
+    <div id="envelope-gate">
+        <div class="envelope-panel envelope-left">
+            <div class="absolute top-16 right-8 text-stone-300 opacity-60 text-right">
+                <span class="font-serif text-2xl tracking-widest block font-bold text-lemongreen">R | J</span>
+                <span class="text-[9px] tracking-[0.3em] uppercase block">THE ABOAGYES 2026</span>
+            </div>
+        </div>
+
+        <div class="envelope-ribbon"></div>
+
+        <div class="floral-sprig">
+            <svg viewBox="0 0 100 100" fill="none" class="w-full h-full text-stone-400">
+                <path d="M50 90 C45 60, 40 40, 30 20" stroke="#6A8D2F" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M50 90 C52 70, 58 50, 70 30" stroke="#6A8D2F" stroke-width="1.2" stroke-linecap="round"/>
+                <circle cx="30" cy="20" r="3" fill="#FAF6F0" stroke="#dbd3c5" stroke-width="1"/>
+                <circle cx="70" cy="30" r="3.5" fill="#FAF6F0" stroke="#dbd3c5" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <!-- Lemon Green Wax Seal -->
+        <div class="wax-seal" onclick="unlockInvitation()">
+            <div class="wax-seal-rim"></div>
+            <span class="wax-seal-monogram">R&amp;J</span>
+        </div>
+
+        <div class="envelope-panel envelope-right flex flex-col justify-end p-8">
+            <div id="personalizedTag" class="hidden mb-24 bg-stone-50/90 border border-gold/40 p-4 rounded-xl shadow-md text-center max-w-xs animate-pulse">
+                <span class="text-[9px] uppercase tracking-widest text-lemongreen font-bold block mb-1">Especially Invited</span>
+                <p id="personalizedGuestName" class="font-script text-3xl text-wine font-semibold"></p>
+            </div>
+            
+            <div class="text-stone-500 max-w-xs text-left">
+                <span class="text-[9px] uppercase tracking-[0.3em] font-bold text-lemongreen block mb-1">THE ABOAGYES 2026</span>
+                <p class="font-serif italic text-sm text-stone-600">Kindly tap the wax seal to open our official wedding invitation.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute inset-0 pointer-events-none overflow-hidden" id="leafContainer"></div>
+
+    <!-- 1B. HERO SECTION -->
+    <header class="min-h-screen flex items-center justify-center p-4 md:p-8 floral-header-bg relative overflow-hidden">
+        <div class="relative z-10 w-full max-w-sm md:max-w-md py-12 px-6 md:px-10 text-center premium-oval-card flex flex-col justify-center min-h-[85vh] my-4 mx-auto overflow-hidden">
+            
+            <!-- Lemon Green Monogram Watermark -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-[0.05] pointer-events-none transform scale-110 z-0">
+                <svg class="w-full h-full p-8" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="92" stroke="#6A8D2F" stroke-width="1.5" />
+                    <circle cx="100" cy="100" r="87" stroke="#6A8D2F" stroke-width="2.5" />
+                    <text x="38" y="105" font-family="'Playfair Display', serif" font-weight="600" font-size="82" fill="#6A8D2F">R</text>
+                    <text x="75" y="128" font-family="'Playfair Display', serif" font-size="52" font-style="italic" fill="#6A8D2F">&amp;</text>
+                    <text x="110" y="152" font-family="'Playfair Display', serif" font-weight="600" font-size="82" fill="#6A8D2F">J</text>
+                </svg>
+            </div>
+
+            <div class="space-y-4 relative z-10">
+                <div>
+                    <span class="font-serif text-3xl text-lemongreen font-bold tracking-widest block">R &amp; J</span>
+                    <p class="text-[9px] tracking-[0.4em] uppercase text-lemongreen font-bold mt-1">THE ABOAGYES 2026</p>
+                    <div class="w-12 h-0.5 bg-lemongreen/35 mx-auto mt-2"></div>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-[10px] tracking-[0.2em] text-stone-500 uppercase font-semibold">Together with their Families</p>
+                    <h1 class="text-lg md:text-xl font-bold tracking-wide text-stone-900 leading-snug">
+                        Eld. Dr. Richard Atta Aboagye <br>
+                        <span class="text-sm font-serif italic text-wine my-1 block">&amp;</span>
+                        Josephine Esarwaa Essel
+                    </h1>
+                </div>
+
+                <!-- Interactive Date Scratch Reveal -->
+                <div class="py-4 bg-[#FAF6F0]/65 rounded-2xl border border-stone-200/40 p-4 max-w-xs mx-auto">
+                    <p class="text-[9px] uppercase tracking-widest text-lemongreen font-bold mb-3">Scratch Gold Seals to Unveil Date</p>
+                    <div class="flex justify-center gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="scratch-box">
+                                <canvas id="scratchMonth" class="scratch-canvas" width="80" height="80"></canvas>
+                                <div class="scratch-data-mask">
+                                    <span class="font-serif text-lg font-bold text-stone-900">AUG</span>
+                                </div>
+                            </div>
+                            <span class="text-[8px] text-stone-400 uppercase tracking-wider font-bold mt-1">Month</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="scratch-box">
+                                <canvas id="scratchDay" class="scratch-canvas" width="80" height="80"></canvas>
+                                <div class="scratch-data-mask">
+                                    <span class="font-serif text-xl font-bold text-stone-900">15</span>
+                                </div>
+                            </div>
+                            <span class="text-[8px] text-stone-400 uppercase tracking-wider font-bold mt-1">Day</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="scratch-box">
+                                <canvas id="scratchYear" class="scratch-canvas" width="80" height="80"></canvas>
+                                <div class="scratch-data-mask">
+                                    <span class="font-serif text-lg font-bold text-stone-900">2026</span>
+                                </div>
+                            </div>
+                            <span class="text-[8px] text-stone-400 uppercase tracking-wider font-bold mt-1">Year</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 max-w-xs mx-auto border-t border-stone-100">
+                    <p class="italic text-stone-600 text-[11px] leading-relaxed">
+                        "Many waters cannot quench love, neither can the floods drown it."
+                    </p>
+                    <p class="text-[9px] uppercase tracking-widest text-lemongreen font-semibold mt-1">— Song of Solomon 8:7</p>
+                </div>
+
+                <!-- Countdown -->
+                <div class="pt-2 border-t border-stone-100/50">
+                    <div class="flex justify-center gap-2 text-stone-800" id="countdown">
+                        <div class="bg-[#FAF6F0]/80 rounded-lg px-2.5 py-1 min-w-[45px] border border-stone-200/40">
+                            <span class="block text-sm font-bold" id="days">00</span>
+                            <span class="text-[7px] text-stone-400 uppercase tracking-wider font-semibold">Days</span>
+                        </div>
+                        <div class="bg-[#FAF6F0]/80 rounded-lg px-2.5 py-1 min-w-[45px] border border-stone-200/40">
+                            <span class="block text-sm font-bold" id="hours">00</span>
+                            <span class="text-[7px] text-stone-400 uppercase tracking-wider font-semibold">Hrs</span>
+                        </div>
+                        <div class="bg-[#FAF6F0]/80 rounded-lg px-2.5 py-1 min-w-[45px] border border-stone-200/40">
+                            <span class="block text-sm font-bold" id="minutes">00</span>
+                            <span class="text-[7px] text-stone-400 uppercase tracking-wider font-semibold">Mins</span>
+                        </div>
+                        <div class="bg-[#FAF6F0]/80 rounded-lg px-2.5 py-1 min-w-[45px] border border-stone-200/40">
+                            <span class="block text-sm font-bold" id="seconds">00</span>
+                            <span class="text-[7px] text-stone-400 uppercase tracking-wider font-semibold">Secs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="scrollToElement('our-invitation')" class="bg-lemongreen hover:bg-lemongreen-dark text-white text-[9px] tracking-widest uppercase font-bold py-2 px-5 rounded-full transition-all duration-300 shadow-sm">
+                        Explore Invitation ↓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. OUR INVITATION SECTION -->
+    <section id="our-invitation" class="py-16 px-4 max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl text-stone-900 mb-2 font-serif-lux font-semibold">Our Invitation</h2>
+            <p class="text-xs uppercase tracking-widest text-lemongreen font-bold">Main Invitation Card</p>
+            <div class="mt-4 border-t border-[#FFDAB9] w-20 mx-auto"></div>
+        </div>
+
+        <div class="max-w-md mx-auto">
+            <div class="bg-white rounded-2xl overflow-hidden border border-stone-200/50 gold-shadow transition-all duration-300">
+                <button onclick="toggleSuiteCard('mainCard')" class="w-full p-5 flex justify-between items-center bg-stone-50/50 hover:bg-stone-50 transition">
+                    <span class="font-serif-lux text-base text-stone-900 font-semibold flex items-center gap-2">
+                        ✉️ View Main Keepsake Card
+                    </span>
+                    <span id="mainCard-icon" class="text-stone-500 transition-transform duration-300 font-bold text-xl">+</span>
+                </button>
+                <div id="mainCard-content" class="hidden border-t border-stone-100 p-4 bg-stone-50 text-center">
+                    <div class="max-w-sm mx-auto p-8 bg-[#FCF9F5] rounded-xl premium-border shadow-inner text-center my-4 relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="mb-4 text-[10px] tracking-[0.4em] uppercase text-lemongreen font-bold">THE ABOAGYES 2026</div>
+                            <h3 class="text-3xl font-serif text-stone-950 leading-tight mb-2">Richard <span class="text-wine italic">&amp;</span> Josephine</h3>
+                            <div class="w-12 h-px bg-[#D4AF37] mx-auto my-3"></div>
+                            <p class="text-xs text-stone-500 italic mb-6">Saturday, 15th August 2026</p>
+                            <p class="text-xs text-stone-600 leading-relaxed mb-4">Request the honour of your presence as they celebrate their Holy Matrimony &amp; Reception.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. OUR STORY / BEAUTIFUL JOURNEY (SIDE BY SIDE SCROLLING GALLERY) -->
+    <section id="our-story" class="py-16 bg-white px-4">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-lemongreen block mb-2">Our Story</span>
+            <h2 class="text-3xl md:text-4xl text-stone-900 font-serif-lux">A Beautiful Journey</h2>
+            <div class="w-16 h-0.5 bg-lemongreen mx-auto mt-4"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-12">
+            <!-- Full-Width Hero Portrait (hero.jpg) -->
+            <div class="overflow-hidden rounded-2xl shadow-lg border border-stone-100">
+                <img src="hero.jpg" alt="Richard & Josephine Hero Portrait" class="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700">
+            </div>
+
+            <!-- Side by Side Horizontal Scrolling Carousel 1 (story-01.jpg & story-02.jpg) -->
+            <div class="relative group">
+                <div class="horizontal-scroll-container gap-4 pb-4">
+                    <div class="horizontal-scroll-item overflow-hidden rounded-2xl shadow-md border border-stone-100 h-[380px]">
+                        <img src="story-01.jpg" alt="Richard & Josephine Story Moment 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="horizontal-scroll-item overflow-hidden rounded-2xl shadow-md border border-stone-100 h-[380px]">
+                        <img src="story-02.jpg" alt="Richard & Josephine Story Moment 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+                <div class="text-center text-[10px] tracking-widest uppercase text-stone-400 font-medium">← Swipe to view photos →</div>
+            </div>
+
+            <!-- Interstitial Story Caption -->
+            <div class="text-center py-6 my-4">
+                <p class="font-serif italic text-xl md:text-2xl text-wine">"Two families. One future."</p>
+                <p class="text-[10px] tracking-[0.3em] uppercase text-lemongreen font-bold mt-2">15.08.2026</p>
+            </div>
+
+            <!-- Side by Side Horizontal Scrolling Carousel 2 (story-03.jpg & story-04.jpg) -->
+            <div class="relative group">
+                <div class="horizontal-scroll-container gap-4 pb-4">
+                    <div class="horizontal-scroll-item overflow-hidden rounded-2xl shadow-md border border-stone-100 h-[380px]">
+                        <img src="story-03.jpg" alt="Richard & Josephine Story Moment 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="horizontal-scroll-item overflow-hidden rounded-2xl shadow-md border border-stone-100 h-[380px]">
+                        <img src="story-04.jpg" alt="Richard & Josephine Story Moment 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+                <div class="text-center text-[10px] tracking-widest uppercase text-stone-400 font-medium">← Swipe to view photos →</div>
+            </div>
+
+            <!-- Large Romantic Photo (story-05.jpg) -->
+            <div class="overflow-hidden rounded-2xl shadow-lg border border-stone-100 h-[450px]">
+                <img src="story-05.jpg" alt="Richard & Josephine Romantic Portrait" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+            </div>
+
+            <!-- Closing Portrait Section (closing.jpg) -->
+            <div class="pt-8 text-center space-y-6">
+                <div class="overflow-hidden rounded-2xl shadow-lg border border-stone-100 h-[400px]">
+                    <img src="closing.jpg" alt="Richard & Josephine Closing Celebration" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMALL MONOGRAM DIVIDER -->
+    <div class="text-center py-8">
+        <span class="font-serif text-lemongreen text-xl tracking-widest font-bold">— R &amp; J —</span>
+    </div>
+
+    <!-- 4. TRADITIONAL MARRIAGE CEREMONY PROGRAMME -->
+    <section id="traditional-programme" class="py-12 px-4 max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-md border border-stone-200/60 overflow-hidden">
+            <button onclick="toggleAccordion('trad-prog-content', 'trad-prog-icon')" class="w-full p-6 text-left bg-stone-50 hover:bg-stone-100/80 transition flex justify-between items-center border-b border-stone-200/40">
+                <div>
+                    <span class="text-[9px] uppercase tracking-widest text-lemongreen font-bold block mb-1">Programme 01</span>
+                    <h3 class="text-xl font-serif text-stone-900 font-semibold">Traditional Marriage Ceremony</h3>
+                </div>
+                <span id="trad-prog-icon" class="text-2xl text-lemongreen font-bold transition-transform duration-300">+</span>
+            </button>
+
+            <div id="trad-prog-content" class="hidden p-6 md:p-8 space-y-6">
+                <div class="border-l-2 border-lemongreen pl-4 space-y-6">
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">01</span>
+                        <h4 class="font-semibold text-stone-800">Opening Prayer</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">02</span>
+                        <h4 class="font-semibold text-stone-800">Introduction of Families &amp; Dignitaries</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">03</span>
+                        <h4 class="font-semibold text-stone-800">Declaration of Purpose (Knocking)</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">04</span>
+                        <h4 class="font-semibold text-stone-800">Presentation of Dowry &amp; Gifts</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">05</span>
+                        <h4 class="font-semibold text-stone-800">Bride’s Entrance &amp; Consent</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">06</span>
+                        <h4 class="font-semibold text-stone-800">Handing Over of the Bride</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">07</span>
+                        <h4 class="font-semibold text-stone-800">Customary Blessings</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">08</span>
+                        <h4 class="font-semibold text-stone-800">Couple’s Response &amp; Gratitude</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">09</span>
+                        <h4 class="font-semibold text-stone-800">Family Photoshoot</h4>
+                    </div>
+                    <div>
+                        <span class="text-xs text-lemongreen font-bold block">10</span>
+                        <h4 class="font-semibold text-stone-800">Closing Prayer &amp; Reception Refreshments</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CHURCH WEDDING ORDER OF SERVICE -->
+    <section id="church-programme" class="py-6 px-4 max-w-2xl mx-auto mb-16">
+        <div class="bg-white rounded-2xl shadow-md border border-stone-200/60 overflow-hidden">
+            <button onclick="toggleAccordion('church-prog-content', 'church-prog-icon')" class="w-full p-6 text-left bg-stone-50 hover:bg-stone-100/80 transition flex justify-between items-center border-b border-stone-200/40">
+                <div>
+                    <span class="text-[9px] uppercase tracking-widest text-lemongreen font-bold block mb-1">Programme 02</span>
+                    <h3 class="text-xl font-serif text-stone-900 font-semibold">Church Wedding — Order of Service</h3>
+                </div>
+                <span id="church-prog-icon" class="text-2xl text-lemongreen font-bold transition-transform duration-300">+</span>
+            </button>
+
+            <div id="church-prog-content" class="hidden p-6 md:p-8">
+                <!-- Vertical Timeline -->
+                <div class="relative border-l-2 border-lemongreen/40 ml-3 space-y-6">
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Opening Prayer</h4>
+                        <p class="text-xs text-stone-500">Deaconess Abigail Tsatsu</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Songs of Praise</h4>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Introduction of Dignitaries</h4>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Scripture Reading</h4>
+                        <p class="text-xs text-stone-600 font-serif italic">Genesis 2:18, 21-25</p>
+                        <p class="text-xs text-stone-500">Deaconess Victoria Mann</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Call to Worship</h4>
+                        <p class="text-xs text-stone-500">Elder Clement Boadu</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-wine border-2 border-white"></div>
+                        <h4 class="font-semibold text-wine font-serif text-lg">Exchange of Vows &amp; Blessing of Marriage</h4>
+                        <p class="text-xs text-stone-500">Pastor Samuel Acheampong</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Signing of Certificate</h4>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Offertory</h4>
+                    </div>
+                    <div class="relative pl-6">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-lemongreen border-2 border-white"></div>
+                        <h4 class="font-semibold text-stone-800">Benediction &amp; Closing</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-stone-900 text-stone-300 py-12 px-4 text-center text-xs">
+        <p class="font-serif text-base text-stone-100 mb-2">Richard &amp; Josephine</p>
+        <p class="text-[10px] tracking-widest uppercase text-lemongreen font-semibold">August 15, 2026</p>
+        <div class="w-8 h-px bg-stone-700 mx-auto my-4"></div>
+        <p class="text-stone-500">© 2026 The Aboagye Experience. All rights reserved.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT SYSTEM -->
+    <script>
+        // Countdown Clock Logic
+        const weddingDate = new Date('August 15, 2026 10:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = weddingDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Gate Unlocking & Music Mechanics
+        function unlockInvitation() {
+            const gate = document.getElementById('envelope-gate');
+            gate.classList.add('open');
+            document.body.classList.remove('gate-active');
+            
+            setTimeout(() => {
+                gate.style.display = 'none';
+                document.getElementById('musicToggleBtn').classList.remove('hidden');
+                playMusic();
+            }, 1500);
+        }
+
+        const audio = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        function playMusic() {
+            audio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('musicIcon').innerText = '🎵';
+            }).catch(e => {
+                console.log("Autoplay prevented:", e);
+            });
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                document.getElementById('musicIcon').innerText = '🔇';
+            } else {
+                audio.play();
+                document.getElementById('musicIcon').innerText = '🎵';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Section Toggles
+        function toggleAccordion(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerText = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.innerText = '+';
+            }
+        }
+
+        function toggleSuiteCard(id) {
+            const content = document.getElementById(id + '-content');
+            const icon = document.getElementById(id + '-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerText = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.innerText = '+';
+            }
+        }
+
+        function scrollToElement(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scratch Canvas Initialization
+        function initScratchCanvas(id) {
+            const canvas = document.getElementById(id);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#D4AF37';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#B38F24';
+            ctx.font = 'bold 10px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('SCRATCH', canvas.width / 2, canvas.height / 2);
+
+            let isDrawing = false;
+
+            function scratch(e) {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 12, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('mouseup', () => { isDrawing = false; });
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchmove', scratch);
+            canvas.addEventListener('touchend', () => { isDrawing = false; });
+        }
+
+        window.addEventListener('load', () => {
+            initScratchCanvas('scratchMonth');
+            initScratchCanvas('scratchDay');
+            initScratchCanvas('scratchYear');
+        });
+    </script>
+</body>
+</html>
